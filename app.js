@@ -1,13 +1,8 @@
-const fs = require("fs");
-const readStream = fs.createReadStream("largetext.txt", { encoding: "utf-8" });
-const writeStream = fs.createWriteStream("writeStream.txt");
-// readStream.on("data", (chunk) => {
-//   console.log("##### new chunk #####");
-//   console.log(chunk);
+const express = require("express");
+const app = express();
 
-//   writeStream.write(`\n #####new chunk #####\n`);
-//   writeStream.write(chunk);
-// });
-//stream.pipe
+app.get("/", (req, res) => {
+  res.send("./views/index.html");
+});
 
-readStream.pipe(writeStream);
+app.listen(3000);
