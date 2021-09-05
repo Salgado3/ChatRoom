@@ -1,8 +1,12 @@
 const express = require("express");
 const app = express();
-
+const Mongodb = MongoDB_Key
 app.set("view engine", "ejs");
 app.listen(3000);
+
+
+//setting up dotenv
+require('dotenv').config({ path: "./config/.env" })
 
 app.get("/", (req, res) => {
   const items = [
