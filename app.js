@@ -1,12 +1,23 @@
-const express = require("express");
-const app = express();
-const Mongodb = MongoDB_Key
-app.set("view engine", "ejs");
-app.listen(3000);
-
-
 //setting up dotenv
 require('dotenv').config({ path: "./config/.env" })
+
+const express = require("express");
+const mongoose = require("mongoose");
+const app = express();
+const mongodb = process.env.MongoDB_Key;
+
+mongoose.connect(mongodb)
+.then(()=> console.log("connected to Db"))
+.catch((err)=> console.log(err))
+
+
+
+
+app.set("view engine", "ejs");
+app.listen(process.env.PORT || 8000, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
+});
+
 
 app.get("/", (req, res) => {
   const items = [
