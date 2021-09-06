@@ -19,13 +19,29 @@ app.listen(process.env.PORT || 8000, () => {
 });
 
 app.get('/create-item', (req,res)=>{
-  const Item = new Item({
+  const item = new Item({
     name: "phone",
-    price: 2000
+    price: 1000
   }) 
-  Item.save()
+  item.save()
   .then(result=> res.send(result))
+  .catch(err=> console.log(err))
 })
+
+app.get('/get-items', (req,res)=>{
+ 
+  Item.find()
+  .then(result=> res.send(result))
+  .catch(err=> console.log(err))
+})
+
+app.get('/get-item', (req,res)=>{
+ 
+  Item.findById()
+  .then(result=> res.send(result))
+  .catch(err=> console.log(err))
+})
+
 
 
 
