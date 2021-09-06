@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Item = require('./models/items');
 const app = express();
+app.use(express.urlencoded({extended: true}));
 const mongodb = process.env.MongoDB_Key;
 
 mongoose.connect(mongodb)
@@ -18,45 +19,34 @@ app.listen(process.env.PORT || 8000, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
 });
 
-app.get('/create-item', (req,res)=>{
-  const item = new Item({
-    name: "phone",
-    price: 1000
-  }) 
-  item.save()
-  .then(result=> res.send(result))
-  .catch(err=> console.log(err))
-})
+//routes
+
+app.get("/", (req, res) => {
+  res.redirect("/get-items")
+});
 
 app.get('/get-items', (req,res)=>{
  
   Item.find()
-  .then(result=> res.send(result))
+  .then(result=> 
+  res.render("index", { items:result })
+  )
   .catch(err=> console.log(err))
 })
 
-app.get('/get-item', (req,res)=>{
- 
-  Item.findById()
-  .then(result=> res.send(result))
-  .catch(err=> console.log(err))
-})
-
-
-
-
-app.get("/", (req, res) => {
-  const items = [
-    { name: "mobile phone", price: 1000 },
-    { name: "book", price: 30 },
-    { name: "computer", price: 2000 },
-  ];
-  res.render("index", { items });
-});
 
 app.get("/add-item.ejs", (req, res) => {
   res.render("add-item");
 });
+
+app.post('/items', (req,res)=>{
+console.log(req.body)
+const item = Item(req.body)
+item.save().then(()=>{
+  res.redirect('/get-items')
+}).catch((err)=>console.log(err))
+
+})
 
 app.use((req, res) => {
   res.render("error");
